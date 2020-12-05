@@ -1,22 +1,14 @@
-lines = open('input.txt', 'r').readlines()
+def get_id(s: str, r: list, c: list) -> int:
+    if not s:
+        return r[0] * 8 + c[0]
+    return get_id(
+        s[1:],
+        r[len(r)//2 if s[0] == 'B' else 0:len(r)//2 if s[0] == 'F' else len(r)],
+        c[len(c)//2 if s[0] == 'R' else 0:len(c)//2 if s[0] == 'L' else len(c)]
+    )
 
-biggest_id = 0
-ids = [r * 8 + c for r in range(1, 127) for c in range(8)]
-for line in lines:
-    rows = list(range(128))
-    cols = list(range(8))
-    for s in line:
-        if s == 'F':
-            rows = rows[:len(rows)//2]
-        elif s == 'B':
-            rows = rows[len(rows)//2:]
-        elif s == 'L':
-            cols = cols[:len(cols)//2]
-        elif s == 'R':
-            cols = cols[len(cols)//2:]
-    id = rows[0] * 8 + cols[0]
-    ids.remove(id)
-    biggest_id = max(id, biggest_id)
 
-print(f'Part 1: {id}')
-print(f'Part 2: {[id for i, id in enumerate(ids) if ids[i-1] != id-1][1]}')
+ids = set((map(lambda x: get_id(x.strip(), list(range(128)), list(range(8))), open('input.txt', 'r').readlines())))
+seat = (set(range(min(ids), last := max(ids))) - ids).pop()
+print(f'Part 1: {last}')  # 926
+print(f'Part 2: {seat}')  # 657
