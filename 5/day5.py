@@ -3,8 +3,8 @@ def get_id(s: str, r: list, c: list) -> int:
         return r[0] * 8 + c[0]
     return get_id(
         s[1:],
-        r[len(r)//2 if s[0] == 'B' else 0:len(r)//2 if s[0] == 'F' else len(r)],
-        c[len(c)//2 if s[0] == 'R' else 0:len(c)//2 if s[0] == 'L' else len(c)]
+        r[len(r)//2:] if s[0] == 'B' else r[:len(r)//2] if len(s) > 3 else r,
+        c[len(c)//2:] if s[0] == 'R' else c[:len(c)//2] if len(s) < 4 else c
     )
 
 
